@@ -1,8 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Name=Install Arch Linux
-Exec=/root/Desktop/install.sh
-Icon=system-software-install
-Terminal=true
-Type=Application
-Categories=System;
