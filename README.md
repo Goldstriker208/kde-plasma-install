@@ -145,7 +145,7 @@ pacman -S virtualbox-guest-utils xf86-video-vmware
 ```
 
 
-## Step 12: Exit & Reboot
+## Step 13: Exit & Reboot
 ```bash
 # Exit chroot
 exit
