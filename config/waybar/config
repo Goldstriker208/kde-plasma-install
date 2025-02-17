@@ -1,0 +1,48 @@
+{
+    "layer": "top",
+    "modules-left": [
+        "custom/app-launcher",
+        "custom/spacer-1",
+        "custom/chatgpt",
+        "custom/spacer-2",
+        "custom/firefox",
+        "sway/workspaces",
+        "sway/mode"
+    ],
+    "modules-center": ["sway/window"],
+    "modules-right": ["battery", "clock"],
+
+    "sway/window": {
+        "max-length": 50
+    },
+    "battery": {
+        "format": "{capacity}% {icon}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "clock": {
+        "format-alt": "{:%a, %d. %b  %H:%M}"
+    },
+    "custom/app-launcher": {
+        "format": "󰍉 Apps",
+        "tooltip": false,
+        "on-click": "rofi -show drun"
+    },
+    "custom/spacer-1": {
+        "format": "  ",
+        "tooltip": false
+    },
+    "custom/chatgpt": {
+        "format": " ChatGPT",
+        "tooltip": false,
+        "on-click": "firefox --new-window https://chat.openai.com"
+    },
+    "custom/spacer-2": {
+        "format": "  ",
+        "tooltip": false
+    },
+    "custom/firefox": {
+        "format": "󰈹 Firefox",
+        "tooltip": false,
+        "on-click": "firefox"
+    }
+}
