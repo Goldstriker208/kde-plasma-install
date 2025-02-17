@@ -12,6 +12,9 @@ alias bashrc='nano ~/.bashrc'
 alias starship-config='nano ~/.config/starship.toml'
 
 
+alias list-kdeapps='find /usr/share/applications ~/.local/share/applications -name '*.desktop' -exec grep -H 'Name=' {} \; | cut -d'=' -f2 | sort -u'
+
+
 # Opens VFIO IDs file
 alias vfio-ids='sudo nano /etc/modprobe.d/vfio.conf'
 
