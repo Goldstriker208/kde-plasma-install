@@ -1,0 +1,14 @@
+.modules-left {
+    background: #598DC0;
+    border-radius: 15px;
+}
+
+.modules-center {
+    background: #C5A6D4;
+    border-radius: 15px;
+}
+
+.modules-right {
+    background: #D1D3FF;
+    border-radius: 15px;
+}
