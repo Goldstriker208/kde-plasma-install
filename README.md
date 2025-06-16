@@ -17,46 +17,60 @@ ping archlinux.org -c 3  # Test network
 ## Step 2: Partitioning
 ```bash
 # use cfdisk to partition
+cfdisk /dev/DISK
+
+# or just
+cfdisk
 ```
 ## Step 3: Format Partitions
 ```bash
 # Choose either BTRFS or EXT4
 
-# root partition BTRFS
-mkfs.btrfs -L arch /dev/vda2
+# Option A: EXT4
+###############################
+# Root partition EXT4
+mkfs.ext4 -L arch /dev/sdX
 
-# root partition EXT4
-mkfs.ext4 -L arch /dev/vda2 
- 
-# If needed use this command to clear filesystem signatures or just use -f option on mkfs.btrfs command
-wipefs --all --force
-
-
-# Format Partitions
-
-# Btrfs root 
-mkfs.btrfs -f /dev/sdX
-
-# EFI
+# Format EFI
 mkfs.fat -F32 /dev/sdY
+###############################
+
+# Option B: BTRFS
+##############################
+# Format Root partition BTRFS
+mkfs.btrfs -L arch /dev/sdX
+
+# Format EFI
+mkfs.fat -F32 /dev/sdY
+##############################
 
 ```
 
 ## Step 4: Mount Partitions
 ```bash
-mount /dev/sdaX /mnt
 
-# Optional (BTRFS subvolumes)
+# Option A: No Subvolumes
+##############################################################
+# Mount Root
+mount /dev/sdX /mnt
+
+# Mount EFI Boot Folder
+mount /dev/sdY /mnt/boot
+##############################################################
+
+# Option B: BTRFS Subvolumes (optional and btrfs only)
+##############################################################
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
 btrfs subvolume list -a /mnt
 
-umount /dev/sdX /mnt
-
-# Optional (BTRFS subvolumes)
-mount -o defaults,compress,subvol=@ /dev/vda2 /mnt/
+mount -o defaults,compress,subvol=@ /dev/sdX /mnt/
 mkdir /mnt/home
-mount -o defaults,compress,subvol=@home /dev/vda2 /mnt/home
+mount -o defaults,compress,subvol=@home /dev/sdX /mnt/home
+
+# Mount EFI Boot Folder
+mount /dev/sdY /mnt/boot
+##############################################################
 ```
 
 ## Step 5: Install Arch Linux Base System
