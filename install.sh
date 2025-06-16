@@ -169,7 +169,6 @@ fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
-e
 # Step 11: KDE, SDDM, NetworkManager
 echo "Installing KDE Plasma"
 sleep 2
