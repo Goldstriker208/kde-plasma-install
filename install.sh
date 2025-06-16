@@ -6,12 +6,75 @@
 # TUI Arch Linux Installer using dialog
 # Requires: dialog, iwctl, pacstrap, grub, etc.
 
+#!/bin/bash
+
+# TUI Arch Linux Installer using dialog
+# Requires: dialog, iwctl, pacstrap, grub, etc.
+
+
+# Ask for root password
+ROOT_PASS=$(dialog --insecure --passwordbox "Enter root password:" 10 50 3>&1 1>&2 2>&3)
+clear
+
+# Confirm root password
+ROOT_PASS2=$(dialog --insecure --passwordbox "Confirm root password:" 10 50 3>&1 1>&2 2>&3)
+clear
+
+if [[ "$ROOT_PASS" != "$ROOT_PASS2" ]]; then
+    echo "Root password mismatch. Exiting."
+    exit 1
+fi
+
+# Ask for username
+USERNAME=$(dialog --inputbox "Enter new username:" 10 50 3>&1 1>&2 2>&3)
+clear
+
+# Ask for user password
+USER_PASS=$(dialog --insecure --passwordbox "Enter password for $USERNAME:" 10 50 3>&1 1>&2 2>&3)
+clear
+
+# Confirm user password
+USER_PASS2=$(dialog --insecure --passwordbox "Confirm password for $USERNAME:" 10 50 3>&1 1>&2 2>&3)
+clear
+
+if [[ "$USER_PASS" != "$USER_PASS2" ]]; then
+    echo "User password mismatch. Exiting."
+    exit 1
+fi
+
 set -e
 
 
-# Prompt user for partition names
-# dialog --inputbox "Enter root partition (e.g. /dev/sdX):" 8 40 2>root_part.txt
-# dialog --inputbox "Enter EFI partition (e.g. /dev/sdY):" 8 40 2>efi_part.txt
+
+# Step 0: Setup Wifi/Network
+
+check_internet() {
+    ping -c 1 -W 2 google.com > /dev/null 2>&1
+}
+
+if check_internet; then
+    echo "Internet is connected"
+    sleep 2
+else
+    echo "No internet connection"
+    sleep 2
+
+    # set +e  # Temporarily disable exit-on-error
+    dialog --yesno "No internet connection. Connect to Wifi?" 7 50
+    USER_CHOICE=$?
+    # set -e  # Enable
+
+    clear
+
+    if [[ "$USER_CHOICE" -eq 0 ]]; then
+        nmtui
+        echo "Returned from nmtui"
+    else
+        echo "Skipped wifi setup."
+        sleep 2
+    fi
+fi
+
 
 # Step 1: Select DISK
 DISK=$(dialog --menu "Select disk to partition" 10 40 2 \
@@ -79,17 +142,22 @@ EFI=$(dialog --backtitle "Arch Installer" \
 EFI=$(echo $EFI | grep -o '/dev/[^[:space:]]\+')
 echo $EFI
 
-
-#
-# ROOT=$(<root_part.txt)
-# EFI=$(<efi_part.txt)
-# rm root_part.txt efi_part.txt
-
-
 # Step 3: Format Partitions
 dialog --menu "Choose root filesystem:" 10 40 2 1 "BTRFS" 2 "EXT4" 2>fs_choice.txt
 FS=$(<fs_choice.txt)
 rm fs_choice.txt
+
+
+echo "Formatting $ROOT and $EFI"
+sleep 2
+
+echo "3"
+sleep 1
+echo "2"
+sleep 1
+echo "1"
+sleep 1
+
 
 if [[ "$FS" == "1" ]]; then
     mkfs.btrfs -f -L arch "$ROOT"
@@ -136,14 +204,14 @@ echo "127.0.1.1 arch.localdomain arch" >> /etc/hosts
 
 # Step 9: User & root
 
-# Install sudo (required for /etc/sudoers.d to make sense)
+# Install sudo (required for /etc/sudoers.d)
 pacman -S --noconfirm sudo
 
 echo "Setting up user/root passwords"
 sleep 2
-useradd -m -G wheel -s /bin/bash user
-echo "root:password" | chpasswd
-echo "user:password" | chpasswd
+useradd -m -G wheel -s /bin/bash $USERNAME
+echo "root:$ROOT_PASS" | chpasswd
+echo "$USERNAME:$USER_PASS" | chpasswd
 
 
 echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel
@@ -156,8 +224,10 @@ pacman -S --noconfirm grub efibootmgr
 EOF
 
 # Prompt outside chroot
+set +e  # Temporarily disable exit-on-error
 dialog --yesno "Are you installing on a Mac? (Use --removable GRUB flag)" 7 50
 IS_MAC=$?
+set -e  # enable
 
 arch-chroot /mnt /bin/bash <<EOF
 
@@ -169,15 +239,29 @@ fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
+
 # Step 11: KDE, SDDM, NetworkManager
 echo "Installing KDE Plasma"
 sleep 2
-pacman -S --noconfirm plasma-meta sddm networkmanager
+
+pacman -S --noconfirm plasma-meta sddm networkmanager firefox konsole ark kate gwenview spectacle kcalc
 systemctl enable sddm
 systemctl enable NetworkManager
 
 # Step 12: Drivers
+
+echo "Installing Drivers"
+sleep 2
+
+# Intel Graphics
 pacman -S --noconfirm intel-ucode mesa xf86-video-intel
+
+# AMD Graphics
+#sudo pacman -S mesa xf86-video-amdgpu vulkan-radeon libva-mesa-driver
+
+# NVIDIA Graphics
+#sudo pacman -S nvidia nvidia-utils nvidia-settings
+
 
 EOF
 
