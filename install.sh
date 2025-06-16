@@ -4,13 +4,7 @@
 # konsole --hold -e "/usr/bin/archinstall"
 
 # TUI Arch Linux Installer using dialog
-# Requires: dialog, iwctl, pacstrap, grub, etc.
-
-#!/bin/bash
-
-# TUI Arch Linux Installer using dialog
-# Requires: dialog, iwctl, pacstrap, grub, etc.
-
+# Requires: dialog, iwctl, NetworkManager, pacstrap, grub, etc.
 
 # Ask for root password
 ROOT_PASS=$(dialog --insecure --passwordbox "Enter root password:" 10 50 3>&1 1>&2 2>&3)
@@ -74,6 +68,18 @@ else
         sleep 2
     fi
 fi
+
+
+
+# Update keys and package lists
+pacman -Sy
+
+# Install NetworkManager and dialog 
+pacman -S networkmanager dialog --noconfirm
+
+# Enable and start NetworkManager
+systemctl enable NetworkManager
+systemctl start NetworkManager
 
 
 # Step 1: Select DISK
