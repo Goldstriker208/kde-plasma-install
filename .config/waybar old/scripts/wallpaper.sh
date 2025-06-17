@@ -5,9 +5,9 @@ if ! pgrep -x "swww-daemon" > /dev/null; then
     swww-daemon &
     sleep 1  # Give it time to start
 fi
-#
-# # Set wallpaper using waypaper
-# waypaper --wallpaper "$1"
+
+# Set wallpaper using waypaper
+waypaper --wallpaper "$1"
 
 # Generate colors with pywal
 wal -i "$1" -q

@@ -1,6 +1,3 @@
-@import "wal-style.css";
-
-
 * {
     border: none;
     font-size: 14px;
@@ -15,6 +12,21 @@ window#waybar {
 
 #custom-logo {
 padding: 0 10px;
+}
+
+.modules-left {
+    background: #8A90D2;
+    border-radius: 15px 15px 15px 15px;
+}
+
+.modules-center {
+    background: #D89FBA;
+    border-radius: 15px 15px 15px 15px;
+}
+
+.modules-right {
+    background: #90CDFF;
+    border-radius: 15px 15px 15px 15px;
 }
 
 #custom-clipboard,
@@ -51,20 +63,26 @@ padding: 0 0px;
 }
 
 #battery.charging {
-    color: #26A65B;
+    color: #ffffff;
+    background-color: #26A65B;
+    border-radius: 15px 15px 15px 15px;
 }
 
 #battery.warning:not(.charging) {
+    background-color: #ffbe61;
     color: black;
+    border-radius: 15px 15px 15px 15px;
 }
 
 #battery.critical:not(.charging) {
+    background-color: #f53c3c;
     color: #ffffff;
     animation-name: blink;
     animation-duration: 0.5s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+    border-radius: 15px 15px 15px 15px;
 }
 
 #clock {

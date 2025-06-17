@@ -6,6 +6,10 @@
 # TUI Arch Linux Installer using dialog
 # Requires: dialog, iwctl, NetworkManager, pacstrap, grub, etc.
 
+
+# HOSTNAME="arch"
+# TIMEZONE="US/Pacific"
+
 # Ask for root password
 ROOT_PASS=$(dialog --insecure --passwordbox "Enter root password:" 10 50 3>&1 1>&2 2>&3)
 clear
@@ -74,7 +78,7 @@ fi
 # Update keys and package lists
 pacman -Sy
 
-# Install NetworkManager and dialog 
+# Install NetworkManager and dialog
 pacman -S networkmanager dialog --noconfirm
 
 # Enable and start NetworkManager
@@ -125,7 +129,7 @@ ROOT=$(dialog --backtitle "Arch Installer" \
 
 ROOT=$(echo $ROOT | grep -o '/dev/[^[:space:]]\+')
 echo $ROOT
-sleep 3
+sleep 2
 
 
 
@@ -147,6 +151,7 @@ EFI=$(dialog --backtitle "Arch Installer" \
 
 EFI=$(echo $EFI | grep -o '/dev/[^[:space:]]\+')
 echo $EFI
+sleep 2
 
 # Step 3: Format Partitions
 dialog --menu "Choose root filesystem:" 10 40 2 1 "BTRFS" 2 "EXT4" 2>fs_choice.txt
@@ -208,10 +213,23 @@ echo "KEYMAP=us" > /etc/vconsole.conf
 echo "arch" > /etc/hostname
 echo "127.0.1.1 arch.localdomain arch" >> /etc/hosts
 
-# Step 9: User & root
 
-# Install sudo (required for /etc/sudoers.d)
-pacman -S --noconfirm sudo
+pacman -S --noconfirm dialog git sudo
+
+dialog --yesno "Use Goldstriker208's dotfiles?" 7 50
+IS_CONFIG=$?
+if [[ "$IS_CONFIG" -eq 0 ]]; then
+    cd ~
+    git clone https://github.com/Goldstriker208/kde-plasma-install
+    sudo cp -a kde-plasma-install/. /etc/skel/
+    #rm /etc/skel/install.sh
+else
+    echo "skipped"
+    sleep 2
+fi
+
+
+# Step 9: User & root
 
 echo "Setting up user/root passwords"
 sleep 2
@@ -250,7 +268,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 echo "Installing KDE Plasma"
 sleep 2
 
-pacman -S --noconfirm plasma-meta sddm networkmanager firefox konsole ark kate gwenview spectacle kcalc
+pacman -S --noconfirm plasma-meta sddm networkmanager firefox konsole ark kate gwenview spectacle kcalc dolphin
 systemctl enable sddm
 systemctl enable NetworkManager
 
@@ -268,10 +286,10 @@ pacman -S --noconfirm intel-ucode mesa xf86-video-intel
 # NVIDIA Graphics
 #sudo pacman -S nvidia nvidia-utils nvidia-settings
 
-
 EOF
 
 # Step 13: Finish
+
 umount -R /mnt
 dialog --msgbox "Installation complete. Rebooting!" 6 40
 reboot

@@ -1,0 +1,79 @@
+@import "wal-style.css";
+
+
+* {
+    border: none;
+    font-size: 14px;
+    font-family: "JetBrainsMono Nerd Font,JetBrainsMono NF";
+    min-height: 25px;
+}
+
+window#waybar {
+    background: transparent;
+    margin: 5px;
+}
+
+#custom-logo {
+padding: 0 10px;
+}
+
+#custom-clipboard,
+#custom-colorpicker,
+#custom-powerDraw,
+#bluetooth,
+#pulseaudio,
+#network,
+#disk,
+#memory,
+#backlight,
+#cpu,
+#temperature,
+#custom-weather,
+#idle_inhibitor,
+#jack,
+#tray,
+#window,
+#workspaces {
+padding: 0 5px;
+}
+#pulseaudio {
+padding-top: 0px;
+}
+
+#temperature.critical,
+#pulseaudio.muted {
+color: #FF0000;
+padding-top: 0;
+}
+
+#battery {
+padding: 0 0px;
+}
+
+#battery.charging {
+    color: #26A65B;
+}
+
+#battery.warning:not(.charging) {
+    color: black;
+}
+
+#battery.critical:not(.charging) {
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#clock {
+padding: 0 10px;
+}
+
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #000000;
+    }
+}
