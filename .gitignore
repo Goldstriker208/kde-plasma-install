@@ -1,0 +1,30 @@
+# Cache and logs
+**/logs/
+**/Cache/
+**/cache/
+**/crashpad/
+**/blob_storage/
+**/GPUCache/
+**/Local Storage/
+**/Session Storage/
+**/Code Cache/
+**/leveldb/
+**/log/
+**/*.log*
+**/*.bak
+**/obs-studio/logs/
+**/obs-studio/profiler_data/
+
+# Session and temp
+session/
+.kdeconnect/
+VirtualBox/
+.baloofilerc
+.baloofileinformationrc
+pulse/cookie
+libaccounts-glib/
+sh.cider.genten/
+content_shell/
+dconf/user
+go/telemetry/
+libvirt/qemu/{nvram,ram,snapshot,dump,checkpoint,save}
