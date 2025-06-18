@@ -180,14 +180,25 @@ set -e
 systemctl enable NetworkManager
 systemctl start NetworkManager
 
+disk_options=()
 
-# Step 1: Select DISK
-DISK=$(dialog --menu "Select disk to partition" 10 40 2 \
-  /dev/sda "Disk 1" \
-  /dev/sdb "Disk 2" 3>&1 1>&2 2>&3)
+# Grab all devices and partitions (skip loop, zram, etc.)
+while read -r name size fstype; do
+    [[ "$name" == *"loop"* || "$name" == *"zram"* ]] && continue
+    desc="$size $fstype"
+    disk_options+=("$name" "$desc")
+done < <(lsblk -dpno NAME,SIZE,FSTYPE)
 
-clear
+# Dialog to choose a device or partition
+DISK=$(dialog --backtitle "Arch Installer" \
+  --title "Choose Disk" \
+  --menu "Select the disk to install Arch Linux:" 20 70 15 \
+  "${disk_options[@]}" \
+  3>&1 1>&2 2>&3 3>&-)
 
+DISK=$(echo $DISK | grep -o '/dev/[^[:space:]]\+')
+echo $DISK
+sleep 2
 echo "DEBUG: Selected disk is '$DISK'"
 
 if [ -n "$DISK" ]; then
