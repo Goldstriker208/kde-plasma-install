@@ -2,13 +2,14 @@
 
 ## 📦 Pacman Packages (Official Repos)
 
-### 🖼️ KDE Plasma Suite
+### 🖼️ KDE Plasma
 - `gwenview`  
 - `kcalc`  
 - `spectacle`  
 - `kate`  
 - `konsole`  
-- `krunner`  
+- `krunner`
+- `okular` 
 
 ### 🌐 Hyprland Environment
 - `hyprland`  
@@ -19,7 +20,8 @@
 - `hyprshot`  
 - `hyprutils`  
 - `hyprwayland-scanner`  
-- `waybar`  
+- `waybar`
+- `waypaper`   
 - `rofi`  
 
 ### 🧰 Graphical Applications
@@ -29,7 +31,8 @@
 - `timeshift`  
 - `wine`  
 - `obs-studio`  
-- `cider`  
+- `cider`
+- `kitty`
 
 ### 🖥️ CLI Tools
 - `cmatrix`  
@@ -147,6 +150,12 @@
 - `bluez-qt`  
 - `bluez-qt5`  
 
+---
+
+## 🔤 Fonts
+- `CascadiaCove Nerd Font`    
+- `Caveat`
+- `z003`
 ---
 
 ## 🎮 Graphics Drivers
