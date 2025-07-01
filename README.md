@@ -134,7 +134,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-## Step 11: Install KDE Plasma, SDDM, & NetworkManager
+## Step 11: Install KDE Plasma, Enable SDDM, NetworkManager, and Bluetooth Services
 ```bash
 # Install KDE Plasma desktop environment and essential services
 pacman -S plasma-meta plasma-wayland-session sddm networkmanager
@@ -142,6 +142,9 @@ pacman -S plasma-meta plasma-wayland-session sddm networkmanager
 # Enable display manager and network services
 systemctl enable sddm
 systemctl enable NetworkManager
+
+# Enable Bluetooth
+systemctl enable bluetooth
 ```
 
 ## Step 12: Install Graphics Drivers
@@ -171,4 +174,23 @@ umount -R /mnt
 reboot
 ```
 
+## Macbook Pro 2016/2017 Patches
+https://github.com/Dunedan/mbp-2016-linux  
+- [Fix Sleep](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#suspend--hibernation)
+- [Fix Audio](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#audio-input--output)
 
+```bash
+
+# My power/sleep settings for KDE Plasma 6
+echo "[Battery][RunScript]
+RunScriptIdleTimeoutSec=300
+
+[Battery][SuspendAndShutdown]
+AutoSuspendIdleTimeoutSec=300
+LidAction=64
+SleepMode=3" > ~/.config/powerdevilrc
+
+# Add params to grub
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet mem_sleep_default=s2idle nvme_core.default_ps_max_latency_us=0"
+
+```
