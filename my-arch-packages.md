@@ -187,3 +187,10 @@
 - `gamemode`  
 - `protonup-qt`  
 - `steam-native-runtime`
+- `xwayland` *(if using wayland)*
+
+```bash
+# Fix font/ui issues on steam
+sudo pacman -S webkit2gtk ttf-dejavu noto-fonts ttf-liberation
+```
+
