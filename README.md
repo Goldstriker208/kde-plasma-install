@@ -187,7 +187,7 @@ EnableHiDPI=true
 EnableHiDPI=true
 
 [General]
-GreeterEnvironment=QT_SCREEN_SCALE_FACTORS=1.75,QT_FONT_DPI=144
+GreeterEnvironment=QT_SCREEN_SCALE_FACTORS=1.75,QT_FONT_DPI=$dpi
 " | sudo tee /etc/sddm.conf.d/hidpi.conf
 
 # Edit Grub to turn off splash and verbose
