@@ -174,6 +174,31 @@ umount -R /mnt
 reboot
 ```
 
+## Additional Tweaks
+```bash
+
+# Fix DPI/Scaling on SDDM Login Screen
+mkdir -p /etc/sddm.conf.d/
+dpi=$(xrdb -query | grep -i dpi | awk '{print $2}')
+echo "[Wayland]
+EnableHiDPI=true
+
+[X11]
+EnableHiDPI=true
+
+[General]
+GreeterEnvironment=QT_SCREEN_SCALE_FACTORS=1.75,QT_FONT_DPI=144
+" | sudo tee /etc/sddm.conf.d/hidpi.conf
+
+# Edit Grub to turn off splash and verbose
+sudo nano /etc/default/grub
+
+# Copy and paste into GRUB_CMDLINE_LINUX_DEFAULT Variable
+loglevel=3 quiet
+
+
+```
+
 ## Macbook Pro 2016/2017 Patches
 https://github.com/Dunedan/mbp-2016-linux  
 - [Fix Sleep](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#suspend--hibernation)
@@ -181,7 +206,7 @@ https://github.com/Dunedan/mbp-2016-linux
 
 ```bash
 
-# My power/sleep settings for KDE Plasma 6
+# My power/sleep settings for KDE Plasma 6 (minimize sleep wake time, not always ideal but works)
 echo "[Battery][RunScript]
 RunScriptIdleTimeoutSec=300
 
@@ -190,7 +215,10 @@ AutoSuspendIdleTimeoutSec=300
 LidAction=64
 SleepMode=3" > ~/.config/powerdevilrc
 
-# Add params to grub
-GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet mem_sleep_default=s2idle nvme_core.default_ps_max_latency_us=0"
+# Add params to grub to force s2idle for fixing sleep and nvme issues
+sudo nano /etc/default/grub
+
+# Copy and paste into GRUB_CMDLINE_LINUX_DEFAULT Variable
+mem_sleep_default=s2idle nvme_core.default_ps_max_latency_us=0
 
 ```
