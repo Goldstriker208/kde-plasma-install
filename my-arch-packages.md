@@ -22,7 +22,17 @@
 - `hyprwayland-scanner`  
 - `waybar`
 - `waypaper`   
-- `rofi`  
+- `rofi`
+
+### Hyprland Themeing w/ kde qt & gtk
+- `adw-gtk-theme`
+- `xdg-desktop-portal-gtk`
+- `qt5-wayland`
+- `qt6-wayland`
+- `qt5ct`
+- `qt6ct`( GUI for qt settings)
+- `nwg-look` (GUI for gtk settings)
+- KDE Plasma System Settings -> Themes -> Your Theme (only if kde plasma is installed)
 
 ### 🧰 Graphical Applications
 - `firefox`  
