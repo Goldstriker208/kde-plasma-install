@@ -32,6 +32,7 @@
 - `qt5ct`
 - `qt6ct`( GUI for qt settings)
 - `nwg-look` (GUI for gtk settings)
+- `kvantum` (for special themes and transparency)
 - KDE Plasma System Settings -> Themes -> Your Theme (only if kde plasma is installed)
 
 ### 🧰 Graphical Applications
