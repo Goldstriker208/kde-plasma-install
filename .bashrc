@@ -45,6 +45,30 @@ fi
 
 # ✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨ #
 
+# Check if kernel modules are in sync
+check-kernel() {
+  running=$(uname -r)
+  installed=$(pacman -Q linux | awk '{print $2}')
+  # Normalize installed version: replace .arch with -arch
+  installed_norm=$(echo "$installed" | sed 's/\.arch/-arch/')
+
+  echo "Running kernel:   $running"
+  echo "Installed kernel: $installed_norm"
+
+  if [[ "$running" != "$installed_norm" ]]; then
+    echo "⚠️ Kernel modules are not up to date."
+    echo "This is usually because you upgraded without rebooting."
+    read -p "Reboot now? [Y/n] " ans
+    ans=${ans:-Y}  # default = Y
+    if [[ "$ans" =~ ^[Yy]$ ]]; then
+      sudo reboot
+    else
+      echo "Okay, remember to reboot later! ⚡"
+    fi
+  else
+    echo "✅ Kernel and modules are in sync. No reboot needed."
+  fi
+}
 
 
 # If not running interactively, don't do anything
@@ -71,6 +95,10 @@ eval "$(starship init bash)"
 
 
 #########################################################
+
+
+
+
 
 # Aliases are in ~/.bash_aliases
 if [ -f ~/.bash_aliases ]; then
