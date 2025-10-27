@@ -203,8 +203,29 @@ loglevel=3 quiet
 https://github.com/Dunedan/mbp-2016-linux  
 - [Fix Sleep](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#suspend--hibernation)
 - [Fix Audio](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#audio-input--output)
+- 
+https://wayland.freedesktop.org/libinput/doc/latest/ 
+- [Device Quirks](https://wayland.freedesktop.org/libinput/doc/latest/device-quirks.html)
+  
+```bash
+
+# Fix trackpad palm rejection (may not work)
+
+sudo mkdir -p /etc/libinput
+sudo nano /etc/libinput/local-overrides.quirks
+
+```
+
+```ini
+[Apple SPI Touchpad]
+MatchName=*Apple SPI Touchpad*
+AttrPalmSizeThreshold=90
+```
+
+
 
 ```bash
+
 
 # My power/sleep settings for KDE Plasma 6 (minimize sleep wake time, not always ideal but works)
 echo "[Battery][RunScript]
