@@ -178,6 +178,10 @@ pacman -S grub efibootmgr
 # Install GRUB to EFI
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 
+# Install GRUB to EFI (Use for macs or if the PC does not see grub for some reason)
+# If you use the option --removable then GRUB will be installed to esp/EFI/BOOT/BOOTX64.EFI
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable
+
 # Generate GRUB configuration file
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
