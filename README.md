@@ -1,65 +1,95 @@
-Starship custom toml file - Using Pastel Powerline preset
 
-```
-# partition drives in a partition manager
-# sdX = root partition
-# sdY = efi partition
-```
-# Arch Linux Installation Commands
+# 🐧 Arch Linux Installation Guide
 
-## Step 1: WIFI
+> A step-by-step installation reference for Arch Linux using BTRFS, KDE Plasma
+
+---
+
+## Table of Contents
+1. [Wi-Fi Setup](#step-1-wi-fi-setup)
+2. [Partitioning](#step-2-partitioning)
+3. [Formatting Partitions](#step-3-format-partitions)
+4. [Mounting Partitions](#step-4-mount-partitions)
+5. [Install Base System](#step-5-install-arch-linux-base-system)
+6. [Generate fstab](#step-6-generate-fstab)
+7. [Chroot into System](#step-7-chroot-into-installed-system)
+8. [Configure Basics](#step-8-configure-system-basics)
+9. [User Setup](#step-9-create-root-and-user-accounts)
+10. [GRUB Setup (UEFI)](#step-10-install-and-configure-grub-uefi)
+11. [KDE Plasma + Services](#step-11-install-kde-plasma-enable-sddm-networkmanager-and-bluetooth)
+12. [Graphics Drivers](#step-12-install-graphics-drivers)
+13. [Exit & Reboot](#step-13-finalize-and-reboot)
+14. [Additional Tweaks](#additional-tweaks)
+15. [MacBook Pro 2016/2017 Patches](#macbook-pro-20162017-patches)
+
+---
+
+# 💽 Partition Drives in a Partition Manager
+
+- **sdX** → Root Partition  
+- **sdY** → EFI Partition
+
+---
+
+# 🐧 Arch Linux Installation Commands
+
+## Step 1: Wi-Fi
+
 ```bash
 # For Wi-Fi (run 'station wlan0 connect SSID')
 iwctl  
 ping archlinux.org -c 3  # Test network
 ```
 
+---
+
 ## Step 2: Partitioning
+
 ```bash
-# use cfdisk to partition
+# Use cfdisk to partition
 cfdisk /dev/DISK
 
-# or just
+# Or simply run:
 cfdisk
 ```
-## Step 3: Format Partitions
-```bash
-# Choose either BTRFS or EXT4
 
-# Option A: EXT4
-###############################
+---
+
+## Step 3: Format Partitions
+
+### Option A: EXT4
+```bash
 # Root partition EXT4
 mkfs.ext4 -L arch /dev/sdX
 
 # Format EFI
 mkfs.fat -F32 /dev/sdY
-###############################
+```
 
-# Option B: BTRFS
-##############################
+### Option B: BTRFS
+```bash
 # Format Root partition BTRFS
 mkfs.btrfs -L arch /dev/sdX
 
 # Format EFI
 mkfs.fat -F32 /dev/sdY
-##############################
-
 ```
 
-## Step 4: Mount Partitions
-```bash
+---
 
-# Option A: No Subvolumes
-##############################################################
+## Step 4: Mount Partitions
+
+### Option A: No Subvolumes
+```bash
 # Mount Root
 mount /dev/sdX /mnt
 
 # Mount EFI Boot Folder
 mount /dev/sdY /mnt/boot
-##############################################################
+```
 
-# Option B: BTRFS Subvolumes (optional and btrfs only)
-##############################################################
+### Option B: BTRFS Subvolumes (optional, BTRFS only)
+```bash
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
 btrfs subvolume list -a /mnt
@@ -70,28 +100,39 @@ mount -o defaults,compress,subvol=@home /dev/sdX /mnt/home
 
 # Mount EFI Boot Folder
 mount /dev/sdY /mnt/boot
-##############################################################
 ```
 
+---
+
 ## Step 5: Install Arch Linux Base System
+
 ```bash
 # Install the base system and essential packages
 pacstrap /mnt base linux linux-firmware btrfs-progs
 ```
 
+---
+
 ## Step 6: Generate fstab
+
 ```bash
 # Generate fstab file with UUIDs
 genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
+---
+
 ## Step 7: Chroot into Installed System
+
 ```bash
 # Change root into the new system
 arch-chroot /mnt
 ```
 
+---
+
 ## Step 8: Configure System Basics
+
 ```bash
 # Set timezone to US/Pacific
 ln -sf /usr/share/zoneinfo/US/Pacific /etc/localtime
@@ -109,7 +150,10 @@ echo "myhostname" > /etc/hostname
 echo "127.0.1.1 myhostname.localdomain myhostname" >> /etc/hosts
 ```
 
+---
+
 ## Step 9: Set Root Password & Create User
+
 ```bash
 # Set root password
 passwd
@@ -122,7 +166,10 @@ passwd myuser
 echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/wheel
 ```
 
+---
+
 ## Step 10: Install & Configure GRUB (UEFI)
+
 ```bash
 # Install GRUB and EFI boot manager
 pacman -S grub efibootmgr
@@ -134,7 +181,10 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-## Step 11: Install KDE Plasma, Enable SDDM, NetworkManager, and Bluetooth Services
+---
+
+## Step 11: Install KDE Plasma, Enable SDDM, NetworkManager, and Bluetooth
+
 ```bash
 # Install KDE Plasma desktop environment and essential services
 pacman -S plasma-meta plasma-wayland-session sddm networkmanager
@@ -147,22 +197,26 @@ systemctl enable NetworkManager
 systemctl enable bluetooth
 ```
 
+---
+
 ## Step 12: Install Graphics Drivers
 
-- [Other Graphics](https://wiki.archlinux.org/title/Xorg#Driver_installation) 
-- [NVIDIA](https://wiki.archlinux.org/title/NVIDIA) 
-- [AMD](https://wiki.archlinux.org/title/Xorg#AMD)
+🔗 [Other Graphics](https://wiki.archlinux.org/title/Xorg#Driver_installation)  
+🔗 [NVIDIA](https://wiki.archlinux.org/title/NVIDIA)  
+🔗 [AMD](https://wiki.archlinux.org/title/Xorg#AMD)
 
 ```bash
 # Intel Drivers
 pacman -S intel-ucode mesa xf86-video-intel
 
-# Virtualbox/VMware drivers:
+# Virtualbox/VMware drivers
 pacman -S virtualbox-guest-utils xf86-video-vmware
 ```
 
+---
 
 ## Step 13: Exit & Reboot
+
 ```bash
 # Exit chroot
 exit
@@ -174,9 +228,11 @@ umount -R /mnt
 reboot
 ```
 
-## Additional Tweaks
-```bash
+---
 
+## 🧩 Additional Tweaks
+
+```bash
 # Fix DPI/Scaling on SDDM Login Screen
 mkdir -p /etc/sddm.conf.d/
 dpi=$(xrdb -query | grep -i dpi | awk '{print $2}')
@@ -190,44 +246,26 @@ EnableHiDPI=true
 GreeterEnvironment=QT_SCREEN_SCALE_FACTORS=1.75,QT_FONT_DPI=$dpi
 " | sudo tee /etc/sddm.conf.d/hidpi.conf
 
-# Edit Grub to turn off splash and verbose
+# Edit GRUB to turn off splash and verbose
 sudo nano /etc/default/grub
 
 # Copy and paste into GRUB_CMDLINE_LINUX_DEFAULT Variable
 loglevel=3 quiet
-
-
 ```
 
-## Macbook Pro 2016/2017 Patches
-https://github.com/Dunedan/mbp-2016-linux  
-- [Fix Sleep](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#suspend--hibernation)
-- [Fix Audio](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#audio-input--output)
-- 
-https://wayland.freedesktop.org/libinput/doc/latest/ 
-- [Device Quirks](https://wayland.freedesktop.org/libinput/doc/latest/device-quirks.html)
-  
-```bash
+---
 
-# Fix trackpad palm rejection (may not work)
+## 💻 MacBook Pro 2016/2017 Patches
 
-sudo mkdir -p /etc/libinput
-sudo nano /etc/libinput/local-overrides.quirks
+🔗 [Dunedan macbook 2016 Linux](https://github.com/Dunedan/mbp-2016-linux)  
+- [Fix Sleep](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#suspend--hibernation)  
+- [Fix Audio](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#audio-input--output)  
+- Use **Linux LTS (6.12)** since newer kernels are broken with the patch.  
 
-```
-
-```ini
-[Apple SPI Touchpad]
-MatchName=*Apple SPI Touchpad*
-AttrPalmSizeThreshold=90
-```
-
-
+🔗 [Fix Bluetooth](https://github.com/leifliddy/macbook12-bluetooth-driver)
 
 ```bash
-
-
-# My power/sleep settings for KDE Plasma 6 (minimize sleep wake time, not always ideal but works)
+# My power/sleep settings for KDE Plasma 6
 echo "[Battery][RunScript]
 RunScriptIdleTimeoutSec=300
 
@@ -241,5 +279,4 @@ sudo nano /etc/default/grub
 
 # Copy and paste into GRUB_CMDLINE_LINUX_DEFAULT Variable
 mem_sleep_default=s2idle nvme_core.default_ps_max_latency_us=0
-
 ```
