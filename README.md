@@ -6,21 +6,22 @@
 ---
 
 ## Table of Contents
-1. [Wi-Fi Setup](#step-1-wi-fi-setup)
+1. [Wi-Fi Setup](#step-1-wi-fi)
 2. [Partitioning](#step-2-partitioning)
-3. [Formatting Partitions](#step-3-format-partitions)
-4. [Mounting Partitions](#step-4-mount-partitions)
+3. [Format Partitions](#step-3-format-partitions)
+4. [Mount Partitions](#step-4-mount-partitions)
 5. [Install Base System](#step-5-install-arch-linux-base-system)
 6. [Generate fstab](#step-6-generate-fstab)
-7. [Chroot into System](#step-7-chroot-into-installed-system)
-8. [Configure Basics](#step-8-configure-system-basics)
-9. [User Setup](#step-9-create-root-and-user-accounts)
-10. [GRUB Setup (UEFI)](#step-10-install-and-configure-grub-uefi)
-11. [KDE Plasma + Services](#step-11-install-kde-plasma-enable-sddm-networkmanager-and-bluetooth)
-12. [Graphics Drivers](#step-12-install-graphics-drivers)
-13. [Exit & Reboot](#step-13-finalize-and-reboot)
+7. [Chroot into Installed System](#step-7-chroot-into-installed-system)
+8. [Configure System Basics](#step-8-configure-system-basics)
+9. [Set Root Password & Create User](#step-9-set-root-password--create-user)
+10. [Install & Configure GRUB (UEFI)](#step-10-install--configure-grub-uefi)
+11. [Install KDE Plasma, Enable SDDM, NetworkManager, and Bluetooth Services](#step-11-install-kde-plasma-enable-sddm-networkmanager-and-bluetooth)
+12. [Install Graphics Drivers](#step-12-install-graphics-drivers)
+13. [Exit & Reboot](#step-13-exit--reboot)
 14. [Additional Tweaks](#additional-tweaks)
 15. [MacBook Pro 2016/2017 Patches](#macbook-pro-20162017-patches)
+
 
 ---
 
@@ -201,9 +202,9 @@ systemctl enable bluetooth
 
 ## Step 12: Install Graphics Drivers
 
-🔗 [Other Graphics](https://wiki.archlinux.org/title/Xorg#Driver_installation)  
-🔗 [NVIDIA](https://wiki.archlinux.org/title/NVIDIA)  
-🔗 [AMD](https://wiki.archlinux.org/title/Xorg#AMD)
+- [Other Graphics](https://wiki.archlinux.org/title/Xorg#Driver_installation)  
+- [NVIDIA](https://wiki.archlinux.org/title/NVIDIA)  
+- [AMD](https://wiki.archlinux.org/title/Xorg#AMD)
 
 ```bash
 # Intel Drivers
@@ -230,7 +231,7 @@ reboot
 
 ---
 
-## 🧩 Additional Tweaks
+## Additional Tweaks
 
 ```bash
 # Fix DPI/Scaling on SDDM Login Screen
@@ -257,12 +258,12 @@ loglevel=3 quiet
 
 ## 💻 MacBook Pro 2016/2017 Patches
 
-🔗 [Dunedan macbook 2016 Linux](https://github.com/Dunedan/mbp-2016-linux)  
+[Dunedan macbook 2016 Linux](https://github.com/Dunedan/mbp-2016-linux)  
 - [Fix Sleep](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#suspend--hibernation)  
 - [Fix Audio](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#audio-input--output)  
-- Use **Linux LTS (6.12)** since newer kernels are broken with the patch.  
+- Use **Linux LTS (6.12)** since newer kernels are broken with the audio patch.  
 
-🔗 [Fix Bluetooth](https://github.com/leifliddy/macbook12-bluetooth-driver)
+- [Fix Bluetooth](https://github.com/leifliddy/macbook12-bluetooth-driver)
 
 ```bash
 # My power/sleep settings for KDE Plasma 6
