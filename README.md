@@ -32,7 +32,7 @@
 
 ---
 
-# 🐧 Arch Linux Installation Commands
+# Arch Linux Installation Commands
 
 ## Step 1: Wi-Fi
 
