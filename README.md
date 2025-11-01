@@ -269,6 +269,15 @@ loglevel=3 quiet
 - For audio input use a usb audio device, no patches are available yet.
 
 - [Fix Bluetooth](https://github.com/leifliddy/macbook12-bluetooth-driver)
+- [Fix Camera](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#facetime-hd-camera)
+```bash
+
+# Install facetimehd driver (or use bcwc_pcie driver, havent tested it).
+yay -S facetimehd-dkms
+sudo modprobe facetimehd
+
+```
+
 ```conf
 # For hyperland only (Fix typing trackpad jumping)
 # In hyperland.conf put this:
