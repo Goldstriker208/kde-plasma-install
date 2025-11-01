@@ -265,9 +265,21 @@ loglevel=3 quiet
 [Dunedan macbook 2016 Linux](https://github.com/Dunedan/mbp-2016-linux)  
 - [Fix Sleep](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#suspend--hibernation)  
 - [Fix Audio](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#audio-input--output)  
-- Use **Linux LTS (6.12)** since newer kernels are broken with the audio patch.  
+- Use **Linux LTS (6.12)** since newer kernels are broken with the audio patch.
+- For audio input use a usb audio device, no patches are available yet.
 
 - [Fix Bluetooth](https://github.com/leifliddy/macbook12-bluetooth-driver)
+```conf
+# For hyperland only (Fix typing trackpad jumping)
+# In hyperland.conf put this:
+
+input {
+    touchpad {
+        tap-to-click = false
+        disable_while_typing = true
+    }
+}
+```
 
 ```bash
 # My power/sleep settings for KDE Plasma 6
