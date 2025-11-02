@@ -270,6 +270,7 @@ loglevel=3 quiet
 
 - [Fix Bluetooth](https://github.com/leifliddy/macbook12-bluetooth-driver)
 - [Fix Camera](https://github.com/Dunedan/mbp-2016-linux?tab=readme-ov-file#facetime-hd-camera)
+-[Fix orange/yellow Camera](https://askubuntu.com/questions/1133310/how-can-i-get-rid-of-the-yellow-tint-in-the-image-from-my-macbooks-camera)
 ```bash
 
 # Install facetimehd driver (or use bcwc_pcie driver, havent tested it).
